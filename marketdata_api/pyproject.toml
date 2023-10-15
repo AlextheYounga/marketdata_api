@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "marketdata_api"
+version = "0.1.0"
+description = "An open source implementation of the MarketData API"
+readme = "README.md"
+authors = [
+    {name = "Alex Younger", email = "alex@alextheyounger.me"},
+]
+keywords = [
+    "python",
+    "marketdata",
+    "marketdata.app",
+    "marketdata api",
+    "api",
+    "sdk",
+]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+]
+dependencies = ["pandas", "numpy", "requests"]
+
+[project.urls]
+homepage = "https://github.com/AlextheYounga/marketdata_api"
+author_website = "https://alextheyounger.me"
+api_documentation = "https://docs.marketdata.app/api/"
+marketdata = "https://www.marketdata.app/"
+
+[tool.setuptools.packages.find]
+where = ["src"]  # list of folders that contain the packages (["."] by default)
+include = ["src*"]  # package names should match these glob patterns (["*"] by default)
