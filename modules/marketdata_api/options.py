@@ -1,15 +1,17 @@
 import requests
+import numpy as np
+import pandas as pd
 
 class Option():
-    def __init__(self, api_key):
+    def __init__(self, api_key: str):
         self.api_key = api_key
 
-    def build_option_symbol(symbol, expiry_date, option_type, strike):
+    def build_symbol(self, symbol: str, expiry_date: str, option_type: str, strike: int | float):
         
         """
         Build an Option Symbol
 
-        example       : build_option_symbol('IBM', '2023-02-10', 'C', 140)
+        example       : build_symbol('IBM', '2023-02-10', 'C', 140)
         symbol        : Symbol of the underlying asset
         expiry_date   : Expiry date of the option in the format 'YYYY-MM-DD'
         option_type   : Option type, either 'C' (Call) or 'P' (Put)
@@ -29,25 +31,25 @@ class Option():
         option_symbol = f'{symbol}{year_formatted}{option_type[0].upper()}{strike_formatted}'
         return option_symbol
 
-    def get_option_chain_live(symbol):
+    def get_chain_live(self, symbol: str):
         """
-        get_options_chain_live('AAPL')
+        get_chain_live('AAPL')
         symbol         :'AAPL'
         """
         # https://api.marketdata.app/v1/options/chain/AAPL/?dateformat=timestamp
 
         url = 'https://api.marketdata.app/v1/options/chain/' 
     
-        headers = {'Authorization': api_key.API_KEY}
+        headers = {'Authorization': self.api_key}
         path = f'{symbol}/?dateformat=timestamp'
         final_url = url + path
         chain_expr = requests.get(final_url, headers=headers)
         
         return chain_expr.text
 
-    def get_options_chain_from(symbol, from_date):
+    def get_chain_from(self, symbol, from_date):
         """
-        get_options_chain_expr('AAPL', '2023-02-17')
+        get_chain_expr('AAPL', '2023-02-17')
         symbol         :'AAPL'
         from_date    :'2023-02-17'
         """
@@ -57,7 +59,7 @@ class Option():
         url = 'https://api.marketdata.app/v1/options/chain/'
             
         date_format = 'timestamp'
-        headers = {'Authorization': api_key.API_KEY}
+        headers = {'Authorization': self.api_key}
         
         path = f'{symbol}/?date={from_date}&dateformat=timestamp'
 
@@ -67,12 +69,12 @@ class Option():
         return chain_expr.text
 
 
-    def get_options_chain_expr(symbol, expiry_date):
+    def get_chain_expr(self, symbol, expiry_date):
         """
         Current Option Chains, See
-        get_options_chain_expr_from(symbol, expiry_date, from_date
+        get_chain_expr_from(symbol, expiry_date, from_date
         for Expr Chains
-        get_options_chain_expr('AAPL', '2023-02-17')
+        get_chain_expr('AAPL', '2023-02-17')
         symbol         :'AAPL'
         expiry_date    :'2023-02-17'
         """
@@ -82,7 +84,7 @@ class Option():
         url = 'https://api.marketdata.app/v1/options/chain/'
             
         date_format = 'timestamp'
-        headers = {'Authorization': api_key.API_KEY}
+        headers = {'Authorization': self.api_key}
         
         path = f'{symbol}/?expiration={expiry_date}&dateformat=timestamp'
 
@@ -91,12 +93,12 @@ class Option():
 
         return chain_expr.text
         
-    def get_options_chain_expr_from(symbol, expiry_date, from_date):
+    def get_chain_expr_from(self, symbol, expiry_date, from_date):
         """
         Expired Option Chains, See
-        get_options_chain_expr(symbol, expiry_date)
+        get_chain_expr(symbol, expiry_date)
         for Current Chains
-        get_options_chain_expr('AAPL', '2023-02-17')
+        get_chain_expr('AAPL', '2023-02-17')
         symbol         :'AAPL'
         expiry_date    :'2023-02-17'
         """
@@ -106,8 +108,7 @@ class Option():
 
         url = 'https://api.marketdata.app/v1/options/chain/'
             
-        date_format = 'timestamp'
-        headers = {'Authorization': api_key.API_KEY}
+        headers = {'Authorization': self.api_key}
         
         path = f'{symbol}/?expiration={expiry_date}&date={from_date}&dateformat=timestamp'
 
@@ -118,9 +119,9 @@ class Option():
         
         
 
-    def get_options_chain_weekly(symbol):
+    def get_chain_weekly(self, symbol):
         """
-        get_options_chain_weekly('SPX')
+        get_chain_weekly('SPX')
         symbol:     :'SPX'
 
         """
@@ -129,7 +130,7 @@ class Option():
         url = 'https://api.marketdata.app/v1/options/chain/'  #AAPL/?monthly=true&dateformat=timestamp
         
         
-        headers = {'Authorization': api_key.API_KEY}
+        headers = {'Authorization': self.api_key}
 
         path = f'{symbol}/?monthly=false&dateformat=timestamp'
 
@@ -137,9 +138,9 @@ class Option():
         chain_expr = requests.get(final_url, headers=headers)
         return chain_expr.text
 
-    def get_options_chain_monthly(symbol):
+    def get_chain_monthly(self, symbol):
         """
-        get_options_chain_monthly('SPX')
+        get_chain_monthly('SPX')
         symbol:     :'SPX'
         """
         # https://api.marketdata.app/v1/options/chain/AAPL/?monthly=true&dateformat=timestamp
@@ -147,7 +148,7 @@ class Option():
         url = 'https://api.marketdata.app/v1/options/chain/'  #AAPL/?monthly=true&dateformat=timestam
         
         
-        headers = {'Authorization': api_key.API_KEY}
+        headers = {'Authorization': self.api_key}
 
         path = f'{symbol}/?monthly=true&dateformat=timestamp'
 
@@ -155,9 +156,9 @@ class Option():
         chain_expr = requests.get(final_url, headers=headers)
         return chain_expr.text
 
-    def get_options_chain_year(symbol, year):
+    def get_chain_year(self, symbol, year):
         """
-        get_options_chain_year('IBM', '2022')
+        get_chain_year('IBM', '2022')
         symbol      :'IBM'
         year        :'2023'
         """
@@ -165,7 +166,7 @@ class Option():
         
         url = 'https://api.marketdata.app/v1/options/chain/'  #AAPL/?monthly=true&dateformat=timestamp    
         
-        headers = {'Authorization': api_key.API_KEY}
+        headers = {'Authorization': self.api_key}
 
         path = f'{symbol}/?year={year}&dateformat=timestamp'
 
@@ -173,9 +174,9 @@ class Option():
         chain_expr = requests.get(final_url, headers=headers)
         return chain_expr.text
 
-    def get_options_chain_strike(symbol, strike):
+    def get_chain_strike(self, symbol, strike):
         """
-        get_options_chain_strike('IBM', '150')
+        get_chain_strike('IBM', '150')
         symbol      :'IBM'
         strike      :'150'
         """
@@ -183,7 +184,7 @@ class Option():
         
         url = 'https://api.marketdata.app/v1/options/chain/'  #AAPL/?monthly=true&dateformat=timest
             
-        headers = {'Authorization': api_key.API_KEY}
+        headers = {'Authorization': self.api_key}
 
         path = f'{symbol}/?strike={strike}&dateformat=timestamp'
 
@@ -191,9 +192,9 @@ class Option():
         chain_expr = requests.get(final_url, headers=headers)
         return chain_expr.text
 
-    def get_hist_quotes_from_to(symbol_list, from_date, to_date):
+    def get_historic_quotes_from_to(self, symbol_list, from_date, to_date):
         """
-        get_options_chain_strike(spx_list, '2023-01-26', '2023-02-04')
+        get_chain_strike(spx_list, '2023-01-26', '2023-02-04')
         symbol_list      :['SPX230217C04100000','SPX230217P04100000']
         from_date        :'2023-01-26'
         to_date          :'2023-02-04'
@@ -205,7 +206,7 @@ class Option():
         
         url = 'https://api.marketdata.app/v1/options/quotes/'
         
-        headers = {'Authorization': api_key.API_KEY}
+        headers = {'Authorization': self.api_key}
 
         symbols = symbol_list
 
